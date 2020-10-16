@@ -13,6 +13,7 @@ const LayoutPreset = {
   FIELD: 'FIELD',
   GRAPH: 'GRAPH',
   ORIGINAL: 'ORIGINAL',
+  SIMONE: 'SIMONE',
 };
 
 const LAYOUT_DETAILS = {
@@ -84,6 +85,31 @@ const LAYOUT_DETAILS = {
           <ConfigView />
         </Tile>
         <Tile row={2} col={2}>
+          <TelemetryView />
+        </Tile>
+      </TileGrid>
+    )
+  },
+  [LayoutPreset.SIMONE]: {
+    name: 'Simone',
+    content: (
+      <TileGrid gridTemplate="150px calc(60% - 150px) 40% / 30% 40% 30%">
+        <Tile row={1} col={1}>
+          <OpModeView />
+        </Tile>
+        <Tile row="2 / span 2" col={1}>
+          <FieldView />
+        </Tile>
+        <Tile row="1 / span 3" col={2}>
+          <GraphView />
+        </Tile>
+        <Tile row={1} col={3}>
+          <ConfigView />
+        </Tile>
+        <Tile row={2} col={3}>
+          <CameraView />
+        </Tile>
+        <Tile row={3} col={3}>
           <TelemetryView />
         </Tile>
       </TileGrid>

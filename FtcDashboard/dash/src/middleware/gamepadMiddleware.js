@@ -90,28 +90,28 @@ const extractGamepadState = (gamepad) => {
     };
   case GamepadType.XBOX_360:
     return {
-      left_stick_x: cleanMotionValues(gamepad.axes[0]),
-      left_stick_y: cleanMotionValues(-gamepad.axes[1]),
-      right_stick_x: cleanMotionValues(gamepad.axes[3]),
-      right_stick_y: cleanMotionValues(-gamepad.axes[4]),
-      dpad_up: gamepad.buttons[0].pressed,
-      dpad_down: gamepad.buttons[1].pressed,
-      dpad_left: gamepad.buttons[2].pressed,
-      dpad_right: gamepad.buttons[3].pressed,
-      a: gamepad.buttons[11].pressed,
-      b: gamepad.buttons[12].pressed,
-      x: gamepad.buttons[13].pressed,
-      y: gamepad.buttons[14].pressed,
+      left_stick_x: cleanMotionValues(-gamepad.axes[1]),
+      left_stick_y: cleanMotionValues(gamepad.axes[2]),
+      right_stick_x: cleanMotionValues(-gamepad.axes[3]),
+      right_stick_y: cleanMotionValues(gamepad.axes[4]),
+      dpad_up: gamepad.buttons[12].pressed,
+      dpad_down: gamepad.buttons[13].pressed,
+      dpad_left: gamepad.buttons[14].pressed,
+      dpad_right: gamepad.buttons[15].pressed,
+      a: gamepad.buttons[0].pressed,
+      b: gamepad.buttons[1].pressed,
+      x: gamepad.buttons[2].pressed,
+      y: gamepad.buttons[3].pressed,
       guide: false,
-      start: gamepad.buttons[4].pressed,
-      back: gamepad.buttons[5].pressed,
-      left_bumper: gamepad.buttons[8].pressed,
-      right_bumper: gamepad.buttons[9].pressed,
-      left_stick_button: gamepad.buttons[6].pressed,
-      right_stick_button: gamepad.buttons[7].pressed,
+      start: gamepad.buttons[9].pressed,
+      back: gamepad.buttons[8].pressed,
+      left_bumper: gamepad.buttons[4].pressed,
+      right_bumper: gamepad.buttons[5].pressed,
+      left_stick_button: gamepad.buttons[10].pressed,
+      right_stick_button: gamepad.buttons[11].pressed,
       // the trigger range is [-1, 1] although it starts at 0.0 for some reason
-      left_trigger: gamepad.axes[2] === 0.0 ? 0.0 : (gamepad.axes[2] + 1) / 2,
-      right_trigger: gamepad.axes[5] === 0.0 ? 0.0 : (gamepad.axes[5] + 1) / 2
+      left_trigger: gamepad.buttons[6].value,
+      right_trigger: gamepad.buttons[7].value
     };
   default:
     throw new Error(`Unable to handle support gamepad of type ${type}`);
