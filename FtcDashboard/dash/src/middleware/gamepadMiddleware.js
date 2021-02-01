@@ -90,10 +90,10 @@ const extractGamepadState = (gamepad) => {
     };
   case GamepadType.XBOX_360:
     return {
-      left_stick_x: cleanMotionValues(-gamepad.axes[1]),
-      left_stick_y: cleanMotionValues(gamepad.axes[2]),
-      right_stick_x: cleanMotionValues(-gamepad.axes[3]),
-      right_stick_y: cleanMotionValues(gamepad.axes[4]),
+      left_stick_x: cleanMotionValues(gamepad.axes[0]),
+      left_stick_y: cleanMotionValues(gamepad.axes[1]),
+      right_stick_x: cleanMotionValues(gamepad.axes[2]),
+      right_stick_y: cleanMotionValues(gamepad.axes[3]),
       dpad_up: gamepad.buttons[12].pressed,
       dpad_down: gamepad.buttons[13].pressed,
       dpad_left: gamepad.buttons[14].pressed,
@@ -139,7 +139,7 @@ const gamepadMiddleware = store => {
       if (!GamepadType.isSupported(gamepadType)) {
         continue;
       }
-  
+
       const gamepadState = extractGamepadState(gamepad);
       
       // update gamepad 1 & 2 associations

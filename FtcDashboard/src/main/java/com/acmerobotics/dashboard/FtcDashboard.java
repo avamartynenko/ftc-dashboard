@@ -62,6 +62,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
@@ -173,7 +174,7 @@ public class FtcDashboard implements OpModeManagerImpl.Notifications {
     private TelemetryPacket.Adapter telemetry;
     private ExecutorService telemetryExecutorService;
     private long lastPacketTimestamp;
-    private volatile List<TelemetryPacket> pendingTelemetry = new ArrayList<>();
+    private BlockingQueue<TelemetryPacket> pendingTelemetry;
     private final Object telemetryLock = new Object();
     private int telemetryTransmissionInterval = DEFAULT_TELEMETRY_TRANSMISSION_INTERVAL;
 
@@ -647,9 +648,7 @@ public class FtcDashboard implements OpModeManagerImpl.Notifications {
             return;
         }
 
-        synchronized (telemetryLock) {
-            pendingTelemetry.add(telemetryPacket);
-        }
+        pendingTelemetry.add(telemetryPacket);
 
         lastPacketTimestamp = timestamp;
     }
