@@ -6,39 +6,62 @@ class AutoFitCanvas extends React.Component {
     super(props);
 
     this.resize = this.resize.bind(this);
+
+    this.containerRef = React.createRef();
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.target === this.containerRef.current) {
+          this.resize();
+        }
+      }
+    });
   }
 
   componentDidMount() {
     this.resize();
-    window.addEventListener('resize', this.resize);
+
+    this.resizeObserver.observe(this.containerRef.current);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
+    this.resizeObserver.disconnect();
   }
 
   resize() {
     const canvas = this.props.innerRef.current;
-    canvas.width = canvas.parentElement.clientWidth * devicePixelRatio;
-    canvas.height = canvas.parentElement.clientHeight * devicePixelRatio;
+    canvas.width = this.containerRef.current.clientWidth * devicePixelRatio;
+    canvas.height = this.containerRef.current.clientHeight * devicePixelRatio;
+
     canvas.style.width = `${canvas.width / devicePixelRatio}px`;
     canvas.style.height = `${canvas.height / devicePixelRatio}px`;
 
-    if (this.props.onResize) {
-      this.props.onResize();
-    }
+    this.props.onResize?.();
   }
 
   render() {
-    return <canvas ref={this.props.innerRef} />;
+    return (
+      <div
+        style={{ width: '100%', height: this.props.containerHeight }}
+        ref={this.containerRef}
+      >
+        <canvas ref={this.props.innerRef} />
+      </div>
+    );
   }
 }
 
-AutoFitCanvas.propTypes = {
-  innerRef: PropTypes.any.isRequired,
-  onResize: PropTypes.func
+AutoFitCanvas.defaultProps = {
+  containerHeight: '100%',
 };
 
-const ForwardedAutoFitCanvas = React.forwardRef((props, ref) => <AutoFitCanvas innerRef={ref} {...props} />);
+AutoFitCanvas.propTypes = {
+  innerRef: PropTypes.any.isRequired,
+  onResize: PropTypes.func,
+  containerHeight: PropTypes.string,
+};
+
+const ForwardedAutoFitCanvas = React.forwardRef((props, ref) => (
+  <AutoFitCanvas innerRef={ref} {...props} />
+));
 ForwardedAutoFitCanvas.displayName = 'AutoFitCanvas';
 export default ForwardedAutoFitCanvas;

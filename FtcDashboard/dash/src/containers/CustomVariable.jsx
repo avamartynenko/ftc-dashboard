@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Heading from '../components/Heading';
-import Icon from '../components/Icon';
+
 import BasicVariable from './BasicVariable';
 import VariableType from '../enums/VariableType';
+
+import { ReactComponent as ExpandedMoreIcon } from '../assets/icons/expand_more.svg';
 
 class CustomVariable extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      expanded: false
+      expanded: false,
     };
 
     this.toggleVisibility = this.toggleVisibility.bind(this);
@@ -18,7 +19,7 @@ class CustomVariable extends React.Component {
 
   toggleVisibility() {
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     });
   }
 
@@ -36,8 +37,8 @@ class CustomVariable extends React.Component {
         this.props.onChange({
           __type: VariableType.CUSTOM,
           __value: {
-            [key]: newValue
-          }
+            [key]: newValue,
+          },
         });
       };
 
@@ -45,8 +46,8 @@ class CustomVariable extends React.Component {
         this.props.onSave({
           __type: VariableType.CUSTOM,
           __value: {
-            [key]: newValue
-          }
+            [key]: newValue,
+          },
         });
       };
 
@@ -57,7 +58,8 @@ class CustomVariable extends React.Component {
             name={key}
             value={child.__value}
             onChange={onChange}
-            onSave={onSave} />
+            onSave={onSave}
+          />
         );
       }
 
@@ -72,26 +74,35 @@ class CustomVariable extends React.Component {
           enumValues={child.__enumValues}
           modified={child.__modified}
           onChange={onChange}
-          onSave={onSave} />
+          onSave={onSave}
+        />
       );
     });
 
     return (
       <tr>
         <td>
-          <div className="option-header">
-            <Icon icon={ this.state.expanded ? 'expand-less' : 'expand-more' } size="tiny" onClick={this.toggleVisibility} />
-            <Heading text={name} level={3} />
+          <div
+            className="option-header py-1 cursor-pointer"
+            onClick={this.toggleVisibility}
+          >
+            <div
+              className={`w-7 h-7 mr-2 bg-gray-100 flex-center rounded-full border border-gray-200 hover:border-gray-400 hover:bg-gray-200
+                          transition transform ${
+                            this.state.expanded ? `` : '-rotate-90'
+                          }`}
+            >
+              <ExpandedMoreIcon className="w-6 h-6" />
+            </div>
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg select-none">{name}</h3>
+            </div>
           </div>
-          {
-            this.state.expanded ?
-              (
-                <table>
-                  <tbody>{options}</tbody>
-                </table>
-              )
-              : null
-          }
+          {this.state.expanded && (
+            <table>
+              <tbody>{options}</tbody>
+            </table>
+          )}
         </td>
       </tr>
     );
